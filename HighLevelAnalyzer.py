@@ -185,13 +185,6 @@ class Hla(HighLevelAnalyzer):
         Settings can be accessed using the same name used above.
         """
 
-        print(
-            "Settings:",
-            self.my_string_setting,
-            self.my_number_setting,
-            self.my_choices_setting,
-        )
-
         self.frames = []
         self.word_start_time = None
         self.spi_enable = False
@@ -297,7 +290,7 @@ class Hla(HighLevelAnalyzer):
             else:
                 data_stream = mosi_stream[4 + asic_index * 8 :]
             for data_index in [1, 3, 5]:
-                cell_index = (data_index - 1) / 2
+                cell_index = (data_index - 1) // 2
                 if callable(parse_fn):
                     parsed_data = parse_fn(data_stream[data_index - 1 : data_index + 1])
                 else:
@@ -333,7 +326,7 @@ class Hla(HighLevelAnalyzer):
                     group[6].start_time,
                     group[7].end_time,
                     {
-                        "pec": f"CC: {cc_value} PEC: {data_pec_be_str} {'(VALID)' if data_pec_valid else f'(INVALID) calc 0x{data_pec_calc:03X}'}"
+                        "pec": f"CC: {cc_value} PEC: 0x{rx_crc10:03X} {'(VALID)' if data_pec_valid else f'(INVALID) calc 0x{data_pec_calc:03X}'}"
                     },
                 )
             )
